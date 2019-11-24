@@ -3,18 +3,9 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import numpy as np
 from itertools import combinations
 from copy import deepcopy as dc
-import streamlit as st
+#import streamlit as st
 
-def pyraminx_puzzle(face_colours, moves,puzzle=None ):
-    # move_position = { "U": [[0, 0], [3, 8], [2, 4]],
-    #                   "u": [[0, 0], [0, 1], [0, 2], [0, 3], [3, 8], [3, 3], [3, 7], [3, 6], [2, 4], [2, 6], [2, 5], [2, 1]],
-    #                   "L": [[2, 0], [1, 8], [0, 4]],
-    #                   "l": [[2, 0], [2, 1], [2, 2], [2, 3], [1, 8], [1, 3], [1, 7], [1, 6], [0, 4], [0, 6], [0, 5], [0, 1]],
-    #                   "R": [[3, 0], [0, 8], [1, 4]],
-    #                   "r": [[3, 0], [3, 1], [3, 2], [3, 3], [0, 3], [0, 8], [0, 7], [0, 6], [1, 4], [1, 6], [1, 5], [1, 1]],
-    #                   "B": [[1, 0], [2, 8], [3, 4]],
-    #                   "b": [[1, 0], [1, 1], [1, 2], [1, 3], [2, 8], [2, 3], [2, 7], [2, 6], [3, 4], [3, 6], [3, 5], [3, 1]] }
-    move_position = {
+move_position = {
         "U": [(0, 0), (3, 8), (2, 4)],
         "u": [(0, 0), (0, 1), (0, 2), (0, 3),
               (3, 8), (3, 3), (3, 7), (3, 6),
@@ -25,15 +16,28 @@ def pyraminx_puzzle(face_colours, moves,puzzle=None ):
               (0, 4), (0, 6), (0, 5), (0, 1)],
         "R": [(3, 0), (0, 8), (1, 4)],
         "r": [(3, 0), (3, 1), (3, 2), (3, 3),
-              (0, 3), (0, 8), (0, 7), (0, 6),
+              (0, 8), (0, 3), (0, 7), (0, 6),
               (1, 4), (1, 6), (1, 5), (1, 1)],
         "B": [(1, 0), (2, 8), (3, 4)],
         "b": [(1, 0), (1, 1), (1, 2), (1, 3),
               (2, 8), (2, 3), (2, 7), (2, 6),
               (3, 4), (3, 6), (3, 5), (3, 1)],
     }
-    if puzzle == None:
+
+def pyraminx_puzzle(moves=[],puzz=None ):
+    face_colours= ['R', 'G', 'Y', 'B']
+    # move_position = { "U": [[0, 0], [3, 8], [2, 4]],
+    #                   "u": [[0, 0], [0, 1], [0, 2], [0, 3], [3, 8], [3, 3], [3, 7], [3, 6], [2, 4], [2, 6], [2, 5], [2, 1]],
+    #                   "L": [[2, 0], [1, 8], [0, 4]],
+    #                   "l": [[2, 0], [2, 1], [2, 2], [2, 3], [1, 8], [1, 3], [1, 7], [1, 6], [0, 4], [0, 6], [0, 5], [0, 1]],
+    #                   "R": [[3, 0], [0, 8], [1, 4]],
+    #                   "r": [[3, 0], [3, 1], [3, 2], [3, 3], [0, 3], [0, 8], [0, 7], [0, 6], [1, 4], [1, 6], [1, 5], [1, 1]],
+    #                   "B": [[1, 0], [2, 8], [3, 4]],
+    #                   "b": [[1, 0], [1, 1], [1, 2], [1, 3], [2, 8], [2, 3], [2, 7], [2, 6], [3, 4], [3, 6], [3, 5], [3, 1]] }
+    if puzz == None:
         puzzle = [[c for _ in range(9)] for c in face_colours]
+    else:
+        puzzle = dc(puzz)
     for move in reversed(moves):
         left = "'" not in move
         move_colors = { move: [puzzle[r][c] for r, c in move_position[move]] for move in move_position }
@@ -136,22 +140,22 @@ def show(puzzle):
                 pyraPos = 2 if v == 'b' else 5 if v == 'c' else 7
             colors.append(color(puzzle[pyraSide][pyraPos]))
             colorCount[pyraSide][pyraPos] += 1
-    print(colorCount)
+    # print(colorCount)
     pc=Poly3DCollection(face, 
      facecolors=colors, linewidths=1, edgecolors='k', alpha=1)
     ax.add_collection3d(pc)
 
     return plt
 
-
-face_colors = ['R', 'G', 'Y', 'B']
-# opt = st.multiselect('What are your move',('u', 'b', 'l', 'r',"u'","b'","l'","r'"))
-# if opt == None:
-#     moves=[]
-# else:
-#     moves=[opt]
-moves = ['u','l','b'] # Add moves here
-puzzle=pyraminx_puzzle(face_colors, moves)
-
-# st.pyplot(show(puzzle))
-show(puzzle).show()
+if __name__ == '__main__':
+    face_colors = ['R', 'G', 'Y', 'B']
+    # opt = st.multiselect('What are your move',('u', 'b', 'l', 'r',"u'","b'","l'","r'"))
+    # if opt == None:
+    #     moves=[]
+    # else:
+    #     moves=[opt]
+    puzzle = None
+    for i in range(5):
+        moves = ["u"] # Add moves here
+        puzzle=pyraminx_puzzle(face_colors, moves,puzzle)
+        show(puzzle).show()
