@@ -415,6 +415,8 @@ class mctsState():
 if __name__ == '__main__':
     epsilon = 10
     const_Virtualloss = 2
+    
+## For computing percentage solved scrambles
 #    output = simulate_pyraminx(100,8)
 ###    textInput = input()
 ###    print(output)
@@ -422,6 +424,7 @@ if __name__ == '__main__':
 #      page.write('P: Model12Adi; S: pmcts'+'\n')
 #      page.write(str(output)+'\n')
 
+## For choosing the hyperparameters in MCTS algorithm
 #    epsilon_list = [10**i * 1e-2 for i in range(10)]  # UCT exploration factor
 #    const_Virtualloss_list = [0.001,0.005,0.01,0.05,0.1,0.5,1,2,5,10] # Virtural loss constant
 #    output = []
@@ -436,4 +439,6 @@ if __name__ == '__main__':
 #        with open('results_2independentv.txt','a') as page:
 #          page.write(textInput+'\n')
 #          page.write(str(o)+'\n')
+    
+## For testing on all model at once on a given scramble   
     test_pyraminx(100)
